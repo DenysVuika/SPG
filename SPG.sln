@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPG", "SPG\SPG.csproj", "{0D4D05D0-E1DC-478F-9039-434B443BC9BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{25D4ECA2-2A90-4FC3-AF87-07BBA3A2066B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPG.Samples.Overview", "Samples\SPG.Samples.Overview\SPG.Samples.Overview.csproj", "{107F1E77-DB2D-4905-A3C3-22B8C39392F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D4D05D0-E1DC-478F-9039-434B443BC9BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D4D05D0-E1DC-478F-9039-434B443BC9BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D4D05D0-E1DC-478F-9039-434B443BC9BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D4D05D0-E1DC-478F-9039-434B443BC9BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{107F1E77-DB2D-4905-A3C3-22B8C39392F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{107F1E77-DB2D-4905-A3C3-22B8C39392F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{107F1E77-DB2D-4905-A3C3-22B8C39392F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{107F1E77-DB2D-4905-A3C3-22B8C39392F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{107F1E77-DB2D-4905-A3C3-22B8C39392F4} = {25D4ECA2-2A90-4FC3-AF87-07BBA3A2066B}
+	EndGlobalSection
+EndGlobal
