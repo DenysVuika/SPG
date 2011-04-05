@@ -46,7 +46,7 @@
           <ScrollViewer Background="LightGray" 
 								  VerticalAlignment="Stretch" 
 								  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <TextBlock Text="{TemplateBinding Text}"/>
+            <TextBlock Text="{TemplateBinding Text}" TextWrapping="Wrap"/>
           </ScrollViewer>
         </ControlTemplate>
       </Setter.Value>
