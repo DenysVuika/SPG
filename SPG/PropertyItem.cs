@@ -260,7 +260,7 @@ namespace System.Windows.Controls.PropertyGrid
 
     public T GetAttribute<T>()
     {
-      if (_PropertyInfo.IsStatic) GetAttribute<T>(_PropertyInfo.PropertyInfo);
+      if (_PropertyInfo.IsStatic) return GetAttribute<T>(_PropertyInfo.PropertyInfo);
       return default(T);
     }
 
