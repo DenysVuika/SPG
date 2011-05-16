@@ -46,6 +46,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -84,6 +85,11 @@
     <Compile Include="ComponentModel\UInt32Converter.cs" />
     <Compile Include="ComponentModel\UInt64Converter.cs" />
     <Compile Include="DebugConverter.cs" />
+    <Compile Include="Dynamic\DynamicHelper.cs" />
+    <Compile Include="Dynamic\DynamicPropertyInfo.cs" />
+    <Compile Include="Dynamic\IPropertyProvider.cs" />
+    <Compile Include="Dynamic\PropertyProvider.cs" />
+    <Compile Include="Dynamic\RuntimeObject.cs" />
     <Compile Include="EditorService.cs" />
     <Compile Include="ExceptionEventArgs.cs" />
     <Compile Include="Internals\Requires.cs" />
@@ -119,6 +125,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

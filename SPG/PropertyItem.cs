@@ -17,10 +17,12 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Controls.PropertyGrid.ComponentModel;
 
 namespace System.Windows.Controls.PropertyGrid
 {
+  using ComponentModel;
+  using Dynamic;
+
   /// <summary>
   /// PropertyItem hold a reference to an individual property in the propertygrid
   /// </summary>
@@ -43,7 +45,7 @@ namespace System.Windows.Controls.PropertyGrid
     #endregion
 
     #region Fields
-    private PropertyInfo _PropertyInfo;
+    private DynamicPropertyInfo _PropertyInfo;
     private object _Instance;
     private bool _ReadOnly = false;
     #endregion
@@ -54,7 +56,7 @@ namespace System.Windows.Controls.PropertyGrid
     /// </summary>
     /// <param name="instance"></param>
     /// <param name="property"></param>
-    public PropertyItem(object instance, object value, PropertyInfo property, bool readOnly)
+    public PropertyItem(object instance, object value, DynamicPropertyInfo property, bool readOnly)
     {
       _Instance = instance;
       _PropertyInfo = property;
@@ -91,9 +93,16 @@ namespace System.Windows.Controls.PropertyGrid
       {
         if (_Description == null)
         {
-          DescriptionAttribute attribute = Attribute.GetCustomAttribute(_PropertyInfo, typeof(DescriptionAttribute)) as DescriptionAttribute;
-          //_Description = (attribute != null) ? attribute.Description : string.Empty;
-          _Description = (attribute != null) ? attribute.Description : "No description...";
+          if (!_PropertyInfo.IsStatic)
+          {
+            _Description = "No description";
+          }
+          else
+          {
+            DescriptionAttribute attribute = Attribute.GetCustomAttribute(_PropertyInfo.PropertyInfo, typeof(DescriptionAttribute)) as DescriptionAttribute;
+            //_Description = (attribute != null) ? attribute.Description : string.Empty;
+            _Description = (attribute != null) ? attribute.Description : "No description...";
+          }
         }
         return _Description;
       }
@@ -105,8 +114,15 @@ namespace System.Windows.Controls.PropertyGrid
       {
         if (string.IsNullOrEmpty(_displayName))
         {
-          DisplayNameAttribute attr = GetAttribute<DisplayNameAttribute>(_PropertyInfo);
-          _displayName = (attr != null) ? attr.DisplayName : Name;
+          if (!_PropertyInfo.IsStatic)
+          {
+            return Name;
+          }
+          else
+          {
+            DisplayNameAttribute attr = GetAttribute<DisplayNameAttribute>(_PropertyInfo.PropertyInfo);
+            _displayName = (attr != null) ? attr.DisplayName : Name;
+          }
         }
 
         return _displayName;
@@ -119,11 +135,18 @@ namespace System.Windows.Controls.PropertyGrid
       {
         if (string.IsNullOrEmpty(_category))
         {
-          CategoryAttribute attr = GetAttribute<CategoryAttribute>(_PropertyInfo);
-          if (attr != null && !string.IsNullOrEmpty(attr.Category))
-            _category = attr.Category;
-          else
+          if (!_PropertyInfo.IsStatic)
+          {
             _category = "Misc";
+          }
+          else
+          {
+            CategoryAttribute attr = GetAttribute<CategoryAttribute>(_PropertyInfo.PropertyInfo);
+            if (attr != null && !string.IsNullOrEmpty(attr.Category))
+              _category = attr.Category;
+            else
+              _category = "Misc";
+          }
         }
         return this._category;
       }
@@ -137,6 +160,24 @@ namespace System.Windows.Controls.PropertyGrid
         if (_value == value) return;
         object originalValue = _value;
         _value = value;
+
+        if (!_PropertyInfo.IsStatic)
+        {
+          try
+          {
+            _PropertyInfo.SetValue(_Instance, value);
+          }
+          catch (Exception ex)
+          {
+            _value = originalValue;
+            _ReadOnly = true;
+            OnPropertyChanged("Value");
+            OnPropertyChanged("CanWrite");
+            OnValueError(ex);
+          }
+          return;
+        }
+
         try
         {
           Type propertyType = this._PropertyInfo.PropertyType;
@@ -161,7 +202,7 @@ namespace System.Windows.Controls.PropertyGrid
                 if (tc != null)
                 {
                   object convertedValue = tc.ConvertFrom(value);
-                  _PropertyInfo.SetValue(_Instance, convertedValue, null);
+                  _PropertyInfo.SetValue(_Instance, convertedValue);
                   OnPropertyChanged("Value");
                 }
                 else
@@ -219,7 +260,8 @@ namespace System.Windows.Controls.PropertyGrid
 
     public T GetAttribute<T>()
     {
-      return GetAttribute<T>(_PropertyInfo);
+      if (_PropertyInfo.IsStatic) GetAttribute<T>(_PropertyInfo.PropertyInfo);
+      return default(T);
     }
 
     #endregion

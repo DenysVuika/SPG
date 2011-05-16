@@ -19,9 +19,12 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Browser;
 using System.Windows.Input;
+using System.Dynamic;
 
 namespace System.Windows.Controls.PropertyGrid
 {
+  using Dynamic;
+
   /// <summary>
   /// PropertyGrid
   /// </summary>  
@@ -148,6 +151,11 @@ namespace System.Windows.Controls.PropertyGrid
       this.SetObject(obj);
     }
 
+    public void Reload()
+    {
+      ResetObject(SelectedObject);
+    }
+
     private void AttachWheelEvents()
     {
       HtmlPage.Window.AttachEvent("DOMMouseScroll", OnMouseWheel);
@@ -181,6 +189,10 @@ namespace System.Windows.Controls.PropertyGrid
       if (null == objItem)
         return new List<PropertyItem>();
 
+      var metaProvider = objItem as DynamicObject;
+      if (metaProvider != null)
+        return ParseDynamicObject(metaProvider);
+
       List<PropertyItem> pc = new List<PropertyItem>();
       Type t = objItem.GetType();
       var props = t.GetProperties();
@@ -207,7 +219,7 @@ namespace System.Windows.Controls.PropertyGrid
           try
           {
             object value = pinfo.GetValue(objItem, null);
-            PropertyItem prop = new PropertyItem(objItem, value, pinfo, readOnly);
+            PropertyItem prop = new PropertyItem(objItem, value, new DynamicPropertyInfo(pinfo), readOnly);
             pc.Add(prop);
           }
           catch { }
@@ -215,6 +227,21 @@ namespace System.Windows.Controls.PropertyGrid
       }
 
       return pc;
+    }
+
+    static List<PropertyItem> ParseDynamicObject(DynamicObject target)
+    {
+      var result = new List<PropertyItem>();
+
+      foreach (var propertyName in target.GetDynamicMemberNames())
+      {
+        var value = DynamicHelper.GetValue(target, propertyName);
+        var propertyType = value != null ? value.GetType() : typeof(object);
+        var property = new PropertyItem(target, value, new DynamicPropertyInfo(propertyName, propertyType), false);
+        result.Add(property);
+      }
+
+      return result;
     }
 
     private void SetPropertyDescription(string text)
