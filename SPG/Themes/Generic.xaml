@@ -77,11 +77,13 @@
           <Grid>
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
               <RowDefinition/>
               <RowDefinition Height="Auto" MinHeight="50" MaxHeight="200"/>
             </Grid.RowDefinitions>
             <local:PropertyFilterBox x:Name="PART_PropertyFilterBox" Grid.Row="0"/>
-            <ScrollViewer x:Name="PART_SrollViewer" Grid.Row="1"
+            <TextBlock x:Name="PART_ObjectDisplayName" Grid.Row="1" Text="{TemplateBinding ObjectDisplayName}" FontWeight="Bold" TextTrimming="WordEllipsis"/>
+            <ScrollViewer x:Name="PART_SrollViewer" Grid.Row="2"
 									  Margin="0, 0, 0, 10"
 									  Padding="0"									
 									  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"									  
@@ -89,8 +91,8 @@
 									  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
               <ContentPresenter Content="{TemplateBinding View}"/>
             </ScrollViewer>
-            <controls:GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
-            <local:PropertyDescriptionBox x:Name="PART_PropertyDescriptionBox" Grid.Row="2"/>
+            <controls:GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+            <local:PropertyDescriptionBox x:Name="PART_PropertyDescriptionBox" Grid.Row="3"/>
           </Grid>
         </ControlTemplate>
       </Setter.Value>

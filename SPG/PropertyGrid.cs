@@ -105,6 +105,19 @@ namespace System.Windows.Controls.PropertyGrid
     }
     #endregion SelectedObject
 
+    #region ObjectDisplayName
+
+    public static readonly DependencyProperty ObjectDisplayNameProperty =
+      DependencyProperty.Register("ObjectDisplayName", typeof(string), typeof(PropertyGrid), new PropertyMetadata(string.Empty));
+
+    public string ObjectDisplayName
+    {
+      get { return (string)GetValue(ObjectDisplayNameProperty); }
+      set { SetValue(ObjectDisplayNameProperty, value); }
+    } 
+
+    #endregion
+
     #endregion
 
     #region Overrides
@@ -142,6 +155,13 @@ namespace System.Windows.Controls.PropertyGrid
       // Parse the objects properties
       props = PropertyGrid.ParseObject(obj);
       View.SetProperties(props);
+      ObjectDisplayName = string.Empty;
+      if (obj == null) return;
+
+      var type = obj.GetType();
+
+      var displayName = Attribute.GetCustomAttribute(type, typeof(DisplayNameAttribute)) as DisplayNameAttribute;
+      ObjectDisplayName = displayName != null ? displayName.DisplayName : type.Name;
     }
 
     private void ResetObject(object obj)
