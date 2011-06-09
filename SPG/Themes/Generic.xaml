@@ -81,7 +81,7 @@
               <RowDefinition/>
               <RowDefinition Height="Auto" MinHeight="50" MaxHeight="200"/>
             </Grid.RowDefinitions>
-            <local:PropertyFilterBox x:Name="PART_PropertyFilterBox" Grid.Row="0"/>
+            <local:PropertyFilterBox x:Name="PART_PropertyFilterBox" Visibility="{TemplateBinding PropertyFilterVisibility}" Grid.Row="0"/>
             <TextBlock x:Name="PART_ObjectDisplayName" Grid.Row="1" Text="{TemplateBinding ObjectDisplayName}" FontWeight="Bold" TextTrimming="WordEllipsis"/>
             <ScrollViewer x:Name="PART_SrollViewer" Grid.Row="2"
 									  Margin="0, 0, 0, 10"

@@ -118,6 +118,19 @@ namespace System.Windows.Controls.PropertyGrid
 
     #endregion
 
+    #region PropertyFilterVisibility
+
+    public static readonly DependencyProperty PropertyFilterVisibilityProperty =
+      DependencyProperty.Register("PropertyFilterVisibility", typeof(Visibility), typeof(PropertyGrid), new PropertyMetadata(Visibility.Visible));
+
+    public Visibility PropertyFilterVisibility
+    {
+      get { return (Visibility)GetValue(PropertyFilterVisibilityProperty); }
+      set { SetValue(PropertyFilterVisibilityProperty, value); }
+    }
+
+    #endregion
+
     #endregion
 
     #region Overrides
